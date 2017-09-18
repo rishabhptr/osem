@@ -122,7 +122,7 @@ Osem::Application.routes.draw do
       resources :targets, except: [:show]
       resources :campaigns, except: [:show]
       resources :emails, only: [:show, :update, :index]
-      resources :physical_ticket, only: [:index]
+      resources :physical_ticket,path:"physical_tickets",only: [:index]
       resources :roles, except: [:new, :create] do
         member do
           post :toggle_user

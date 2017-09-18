@@ -3,6 +3,14 @@ class PaymentsController < ApplicationController
   load_and_authorize_resource
   load_resource :conference, find_by: :short_title
   authorize_resource :conference_registrations, class: Registration
+  before_action :check_amount, only: :new
+
+  def check_amount
+   @total_amount_to_pay = Ticket.total_price(@conference, current_user, paid: false)
+     if @total_amount_to_pay.zero?
+      redirect_to root_path,notice: "You dont have any outstanding payments."
+    end
+  end
 
   def index
     @payments = current_user.payments
