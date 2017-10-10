@@ -13,6 +13,9 @@ class PaymentsController < ApplicationController
     if @total_amount_to_pay.zero?
       raise CanCan::AccessDenied.new('Nothing to pay for!', :new, Payment)
     end
+    if conference.end < Date.today
+      raise CanCan::AccessDenied.new('This Conference has ended!', :new, Payment)
+    end
     @unpaid_ticket_purchases = current_user.ticket_purchases.unpaid.by_conference(@conference)
   end
 
