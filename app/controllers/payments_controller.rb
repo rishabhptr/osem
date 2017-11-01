@@ -1,6 +1,6 @@
 class PaymentsController < ApplicationController
   before_action :authenticate_user!
-  load_and_authorize_resource
+  load_and_authorize_resource except: :new
   load_resource :conference, find_by: :short_title
   authorize_resource :conference_registrations, class: Registration
 
@@ -9,12 +9,10 @@ class PaymentsController < ApplicationController
   end
 
   def new
+    authorize! :new, Payment.new(conference_id: @conference.id)
     @total_amount_to_pay = Ticket.total_price(@conference, current_user, paid: false)
     if @total_amount_to_pay.zero?
       raise CanCan::AccessDenied.new('Nothing to pay for!', :new, Payment)
-    end
-    if conference.end < Date.today
-      raise CanCan::AccessDenied.new('This Conference has ended!', :new, Payment)
     end
     @unpaid_ticket_purchases = current_user.ticket_purchases.unpaid.by_conference(@conference)
   end
