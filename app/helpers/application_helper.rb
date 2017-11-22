@@ -153,8 +153,8 @@ module ApplicationHelper
 
   def currency_selector_input(form)
     form.input :price_currency, as: :select,
-                              collection: options_for_select(Money::Currency.all),
-                              include_blank: false, label: 'Price currency', input_html: { class: 'select-help-toggle select-currency'}
+                                collection: options_for_select(Money::Currency.all),
+                                include_blank: false, label: 'Price currency', input_html: { class: 'select-help-toggle select-currency' }
   end
 
   def event_types(conference)
