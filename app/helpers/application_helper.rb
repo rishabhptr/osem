@@ -151,6 +151,12 @@ module ApplicationHelper
                               hint: 'The people responsible for the booth. You can only select existing users.'
   end
 
+  def currency_selector_input(form)
+    form.input :price_currency, as: :select,
+                              collection: options_for_select(Money::Currency.all),
+                              include_blank: false, label: 'Price currency', input_html: { class: 'select-help-toggle select-currency'}
+  end
+
   def event_types(conference)
     conference.program.event_types.map { |et| et.title.pluralize }.to_sentence
   end
