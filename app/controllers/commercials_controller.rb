@@ -12,7 +12,7 @@ class CommercialsController < ApplicationController
                   notice: 'Commercial was successfully created.'
     else
       redirect_to edit_conference_program_proposal_path(conference_id: @conference.short_title, id: @event.id, anchor: 'commercials-content'),
-                  error: "An error prohibited this Commercial from being saved: #{@commercial.errors.full_messages.join('. ')}."
+                  error: "An error prohibited test this Commercial from being saved: #{@commercial.errors.full_messages.join('. ')}."
     end
   end
 
