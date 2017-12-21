@@ -5,10 +5,10 @@
     .text-muted
       Tickets sold for the conference
 .row
-  .col-md-4
+  .col-md-6
     = render partial: 'admin/conferences/doughnut_chart',
     locals: { title: 'Tickets sold', data: @tickets_sold_distribution }
-  .col-md-4
+  .col-md-6
     = render partial: 'admin/conferences/doughnut_chart',
     locals: {title: 'Tickets turnover', data: @tickets_turnover_distribution}
 %br
