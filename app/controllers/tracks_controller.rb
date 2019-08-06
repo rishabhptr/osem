@@ -13,16 +13,15 @@ class TracksController < ApplicationController
 
   def new
     @track = @program.tracks.new(color: @conference.next_color_for_collection(:tracks))
-    @track.build_contact
   end
 
   def edit; end
 
   def create
     @track = @program.tracks.new(track_params)
-    @contact = @track.build_contact(track_params[:contact_attributes])
-    @contact.conference = @conference
     @track.submitter = current_user
+    @contact = @track.build_contact
+    @contact.conference = @conference
     @track.cfp_active = false
     if @track.save
       redirect_to conference_program_tracks_path(conference_id: @conference.short_title),
@@ -59,8 +58,7 @@ class TracksController < ApplicationController
   private
 
   def track_params
-    params.require(:track).permit(:name, :description, :color, :short_name, :start_date, :end_date, :relevance,
-                                  contact_attributes: [:id, :social_tag, :facebook, :googleplus, :twitter, :instagram, :mastodon, :youtube])
+    params.require(:track).permit(:name, :description, :color, :short_name, :start_date, :end_date, :relevance)
   end
 
   def update_state(transition, notice)

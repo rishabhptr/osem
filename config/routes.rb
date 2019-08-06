@@ -87,6 +87,7 @@ Osem::Application.routes.draw do
             patch :reject
             patch :cancel
             patch :update_selected_schedule
+            patch :details
           end
           resources :roles, only: [:show, :edit, :update] do
             member do

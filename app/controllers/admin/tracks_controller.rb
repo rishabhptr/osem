@@ -44,6 +44,8 @@ module Admin
       @track = @program.tracks.new(track_params)
       @track.state = 'confirmed'
       @track.cfp_active = true
+      @track.submitter = current_user
+      @contact = @track.build_contact
       if @track.save
         redirect_to admin_conference_program_tracks_path(conference_id: @conference.short_title),
                     notice: 'Track successfully created.'
@@ -62,6 +64,16 @@ module Admin
       else
         flash.now[:error] = "Track update failed: #{@track.errors.full_messages.join('. ')}."
         render :edit
+      end
+    end
+
+    def details
+      if @track.update_attributes(track_params)
+        redirect_to admin_conference_program_track_path(@conference.short_title, @track),
+                    notice: 'Track details successfully updated.'
+      else
+        flash.now[:error] = "Track details update failed: #{@track.errors.full_messages.join('. ')}."
+        render :show
       end
     end
 
@@ -136,7 +148,8 @@ module Admin
     private
 
     def track_params
-      params.require(:track).permit(:name, :description, :color, :short_name, :cfp_active, :start_date, :end_date, :room_id)
+      params.require(:track).permit(:name, :description, :color, :short_name, :cfp_active, :start_date, :end_date, :room_id,
+                                  contact_attributes: [:id, :social_tag, :facebook, :googleplus, :twitter, :instagram, :mastodon, :youtube])
     end
 
     def update_state(transition, notice)
